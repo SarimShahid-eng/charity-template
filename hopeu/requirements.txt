@@ -1,0 +1,44 @@
+# ============================================================
+#  Hopeu charity site - Laravel (dynamic) - requirements & setup
+# ============================================================
+# Laravel uses Composer, not pip. No extra packages are needed:
+# everything below ships with a fresh `laravel new` project.
+
+[Runtime]
+php        >= 8.1   (8.2+ recommended)
+composer   >= 2.x
+laravel/framework  10.x | 11.x | 12.x   (uses @selected/@checked => Laravel 9+)
+database   MySQL / MariaDB / PostgreSQL / SQLite
+php extensions: pdo_*, mbstring, openssl, fileinfo, ctype, json, tokenizer, xml
+
+[Extra Composer packages]
+(none)
+
+[Setup]
+1. Copy the folders from this zip into your project root (merge).
+   routes/web.php is REPLACED - back it up if you edited it.
+2. In .env set your DB_* values. Optional, BEFORE seeding:
+       ADMIN_EMAIL=you@yourdomain.com
+       ADMIN_PASSWORD=a-strong-password
+3. php artisan migrate
+4. php artisan db:seed --class=SiteSeeder
+5. php artisan serve
+
+[URLs]
+/               Home v1            (hero text + campaigns from DB)
+/donations      Donation 01        (campaigns from DB, paginated)
+/about          About Us
+/contact        Contact            (messages are saved to DB)
+/admin/login    Admin panel
+    /admin                 dashboard
+    /admin/messages        contact messages (read/unread, search, delete, reply)
+    /admin/campaigns       add / edit / delete campaigns (image upload)
+    /admin/settings        address, phones, emails, socials, hero, footer
+
+[Default admin] (if you skipped ADMIN_* in .env)
+    admin@example.com  /  ChangeMe123!      <-- change immediately
+
+[Notes]
+- Uploaded campaign images go to public/uploads/campaigns (no storage:link needed).
+- Template assets live in public/{css,js,vendor,fonts,images}.
+- Contact form: AJAX (public/js/theme.js) + CSRF + honeypot + throttle (5/min).

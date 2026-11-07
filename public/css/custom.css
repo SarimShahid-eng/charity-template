@@ -1,0 +1,2 @@
+/* Fix: percentage label overlapped the "supporters" line on campaign cards */
+.card-style-two .info-meta .supporters{margin-top:32px}
