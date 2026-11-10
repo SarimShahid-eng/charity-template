@@ -1,7 +1,8 @@
 @extends('admin.layout')
 @php $s = $s ?? \App\Models\Setting::allCached(); @endphp
 @section('title', 'Campaigns')
-@section('heading', 'Campaigns')
+@section('heading', 'Donation campaigns')
+@section('subtitle', 'These are the donation cards shown on the Home and Donations pages.')
 
 @section('content')
 <div class="mb-3"><a href="{{ route('admin.campaigns.create') }}" class="btn btn-success"><i class="bi bi-plus-lg"></i> New campaign</a></div>

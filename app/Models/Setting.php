@@ -14,6 +14,12 @@ class Setting extends Model
     public static function schema(): array
     {
         return [
+            'Logo & icon' => [
+                'logo_dark'  => ['Main logo (dark colours)', 'images/logo/logo_03.png', 'image', 'Shown in the header of Donations, About and Contact, and in their footer. Use a logo that is visible on a WHITE background.'],
+                'logo_home'  => ['Home page logo (light colours)', 'images/logo/logo_01.png', 'image', 'Shown in the header of the Home page, which sits on a dark photo. Use a logo that is visible on a DARK background.'],
+                'logo_light' => ['Footer logo (light colours)', 'images/logo/logo_02.png', 'image', 'Shown in the footer of Home and Contact and in the mobile menu. Use a logo that is visible on a DARK background.'],
+                'favicon'    => ['Browser tab icon (favicon)', 'images/fav-icon/icon.png', 'image', 'Small square picture (PNG, e.g. 64×64) shown in the browser tab.'],
+            ],
             'General' => [
                 'site_name'   => ['Site name', 'Hopeu', 'text'],
                 'footer_text' => ['Footer / short description', 'Our charity works to bring hope, food and education to families in need around the world.', 'textarea'],
@@ -69,6 +75,12 @@ class Setting extends Model
     public static function flush(): void
     {
         self::$cache = null;
+    }
+
+    /** Is a public page switched on? (default: yes) */
+    public static function pageActive(string $slug): bool
+    {
+        return (self::allCached()['page_active_' . $slug] ?? '1') !== '0';
     }
 
     public static function put(array $data): void

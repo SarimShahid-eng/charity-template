@@ -26,7 +26,12 @@ class PageContentController extends Controller
             $counts[$slug] = compact('total', 'changed');
         }
 
-        return view('admin.pages.index', compact('pages', 'counts'));
+        $active = [];
+        foreach ($pages as $slug => $page) {
+            $active[$slug] = Setting::pageActive($slug);
+        }
+
+        return view('admin.pages.index', compact('pages', 'counts', 'active'));
     }
 
     public function edit(string $page)
@@ -39,6 +44,7 @@ class PageContentController extends Controller
             'page'    => $data,
             'content' => $content,
             'dbValues'=> Setting::allCached(),
+            'active'  => Setting::pageActive($page),
         ]);
     }
 
@@ -91,7 +97,34 @@ class PageContentController extends Controller
 
         Setting::flush();
 
-        return back()->with('success', 'Page content saved.');
+        $block = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $request->input('block'));
+
+        return redirect(route('admin.pages.edit', $page) . ($block ? '#' . $block : ''))
+            ->with('success', 'Saved! Your changes are now live on the website.');
+    }
+
+    /** Admin-only preview: renders a page even when it is switched OFF for visitors. */
+    public function preview(string $page)
+    {
+        $this->pageOr404($page);
+
+        return match ($page) {
+            'home'      => app(\App\Http\Controllers\PageController::class)->home(),
+            'donations' => app(\App\Http\Controllers\PageController::class)->donations(),
+            'about'     => app(\App\Http\Controllers\PageController::class)->about(),
+            'contact'   => app(\App\Http\Controllers\ContactController::class)->show(),
+        };
+    }
+
+    public function toggle(string $page)
+    {
+        $data = $this->pageOr404($page);
+        $nowActive = ! Setting::pageActive($page);
+
+        Setting::updateOrCreate(['key' => 'page_active_' . $page], ['value' => $nowActive ? '1' : '0']);
+        Setting::flush();
+
+        return back()->with('success', $data['label'] . ' page is now ' . ($nowActive ? 'ON (visible to visitors).' : 'OFF (hidden from visitors).'));
     }
 
     public function reset(string $page)

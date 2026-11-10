@@ -4,7 +4,7 @@
 					<div class="row">
 						<div class="col-lg-3">
 							<div class="footer-intro mb-30 md-mb-50">
-								<a href="{{ route('home') }}"><img src="{{ asset('images/logo/logo_02.png') }}" alt=""></a>
+								<a href="{{ route('home') }}"><img src="{{ asset($s['logo_light']) }}" alt=""></a>
 								<p class="mt-20 mb-30 fs-16">{{ $s['footer_text'] }}</p>
 								<ul class="style-none social-icon d-flex align-items-center">
 									<li class="text-white">Social </li>

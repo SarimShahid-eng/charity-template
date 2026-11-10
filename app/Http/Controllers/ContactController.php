@@ -25,7 +25,6 @@ class ContactController extends Controller
         if (! $request->filled('website')) {
             ContactMessage::create($data + ['ip_address' => $request->ip()]);
         }
-        // dd('ss');
 
         $text = 'Thank you! Your message has been sent. We will get back to you soon.';
 

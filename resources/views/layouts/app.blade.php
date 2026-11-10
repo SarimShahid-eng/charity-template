@@ -14,7 +14,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="theme-color" content="#104b59">
 	<title>@yield('title', $s['site_name'])</title>
-	<link rel="icon" type="image/png" sizes="56x56" href="{{ asset('images/fav-icon/icon.png') }}">
+	<link rel="icon" type="image/png" sizes="56x56" href="{{ asset($s['favicon']) }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}" media="all">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/style.min.css') }}" media="all">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/responsive.css') }}" media="all">
@@ -34,6 +34,16 @@
 				</div>
 			</div>
 		</div>
+
+		@auth
+		@php $__slug = request()->route()?->getName() === 'admin.pages.preview' ? request()->route('page') : null; @endphp
+		@if($__slug && ! \App\Models\Setting::pageActive($__slug))
+		<div class="admin-preview" style="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#d9534f;color:#fff;text-align:center;padding:8px 12px;font:14px/1.4 system-ui,sans-serif">
+			ADMIN PREVIEW: this page is switched OFF, visitors cannot open it.
+			<a href="{{ route('admin.pages.index') }}" style="color:#fff;text-decoration:underline">Turn it on</a>
+		</div>
+		@endif
+		@endauth
 
 		@include('partials.header-' . ($header ?? 'inner'))
 

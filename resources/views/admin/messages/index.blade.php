@@ -1,7 +1,8 @@
 @extends('admin.layout')
 @php $s = $s ?? \App\Models\Setting::allCached(); @endphp
 @section('title', 'Messages')
-@section('heading', 'Contact messages')
+@section('heading', 'Messages from your visitors')
+@section('crumbs')<a href="{{ route('admin.dashboard') }}" class="text-muted">Dashboard</a> › Messages @endsection
 
 @section('content')
 <div class="card">

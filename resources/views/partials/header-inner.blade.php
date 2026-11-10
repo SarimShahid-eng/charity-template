@@ -33,7 +33,7 @@
 					<div class="d-flex align-items-center">
 						<div class="logo order-lg-0">
 							<a href="{{ route('home') }}" class="d-flex align-items-center">
-								<img src="{{ asset('images/logo/logo_03.png') }}" alt="">
+								<img src="{{ asset($s['logo_dark']) }}" alt="">
 							</a>
 						</div>
 						<!-- logo -->
@@ -61,19 +61,27 @@
 							</button>
 							<div class="collapse navbar-collapse" id="navbarNav">
 								<ul class="navbar-nav align-items-lg-center">
-									<li class="d-block d-lg-none"><div class="logo"><a href="{{ route('home') }}" class="d-block"><img src="{{ asset('images/logo/logo_03.png') }}" alt=""></a></div></li>
+									<li class="d-block d-lg-none"><div class="logo"><a href="{{ route('home') }}" class="d-block"><img src="{{ asset($s['logo_dark']) }}" alt=""></a></div></li>
+									@if(\App\Models\Setting::pageActive('home'))
 									<li class="nav-item">
 										<a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Home</a>
 									</li>
+									@endif
+									@if(\App\Models\Setting::pageActive('donations'))
 									<li class="nav-item">
 										<a class="nav-link {{ request()->routeIs('donations') ? 'active' : '' }}" href="{{ route('donations') }}">Donation</a>
 									</li>
+									@endif
+									@if(\App\Models\Setting::pageActive('about'))
 									<li class="nav-item">
 										<a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">About Us</a>
 									</li>
+									@endif
+									@if(\App\Models\Setting::pageActive('contact'))
 									<li class="nav-item">
 										<a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a>
 									</li>
+									@endif
 									<li class="d-lg-none ps-3 pe-3 mt-20">
 										<a href="{{ route('donations') }}" class="btn-one inverse w-100">Donation Now</a>
 									</li>

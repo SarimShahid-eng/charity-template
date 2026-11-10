@@ -26,6 +26,15 @@ class Content
         return self::$schema ??= require resource_path('content/pages.php');
     }
 
+    /** Friendly [title, hint] for a block of a page, falling back to the raw section name. */
+    public static function block(string $page, string $section): array
+    {
+        static $blocks = null;
+        $blocks ??= require resource_path('content/blocks.php');
+
+        return $blocks[$page][$section] ?? [$section, ''];
+    }
+
     /** key => default value for every field. */
     public static function defaults(): array
     {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin;
+use App\Http\Middleware\PageActive;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
@@ -10,12 +11,12 @@ use Illuminate\Support\Facades\Route;
 | Public site
 |--------------------------------------------------------------------------
 */
-Route::get('/', [PageController::class, 'home'])->name('home');
-Route::get('/donations', [PageController::class, 'donations'])->name('donations');
-Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::get('/', [PageController::class, 'home'])->middleware(PageActive::class . ':home')->name('home');
+Route::get('/donations', [PageController::class, 'donations'])->middleware(PageActive::class . ':donations')->name('donations');
+Route::get('/about', [PageController::class, 'about'])->middleware(PageActive::class . ':about')->name('about');
+Route::get('/contact', [ContactController::class, 'show'])->middleware(PageActive::class . ':contact')->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])
-    ->middleware('throttle:5,1')
+    ->middleware([PageActive::class . ':contact', 'throttle:5,1'])
     ->name('contact.store');
 
 /*
@@ -24,8 +25,7 @@ Route::post('/contact', [ContactController::class, 'store'])
 |--------------------------------------------------------------------------
 */
 // The framework's "auth" middleware redirects guests to a route named "login".
-// Route::redirect('/login', '/admin/login')->name('login');
-Route::get('/login',fn()=>redirect()->route('admin.login'));
+Route::redirect('/login', '/admin/login')->name('login');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('login', [Admin\AuthController::class, 'showLogin'])->name('login');
@@ -44,6 +44,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('pages', [Admin\PageContentController::class, 'index'])->name('pages.index');
         Route::get('pages/{page}', [Admin\PageContentController::class, 'edit'])->name('pages.edit');
+        Route::get('preview/{page}', [Admin\PageContentController::class, 'preview'])->name('pages.preview');
+        Route::patch('pages/{page}/toggle', [Admin\PageContentController::class, 'toggle'])->name('pages.toggle');
         Route::put('pages/{page}', [Admin\PageContentController::class, 'update'])->name('pages.update');
         Route::delete('pages/{page}', [Admin\PageContentController::class, 'reset'])->name('pages.reset');
 

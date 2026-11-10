@@ -39,6 +39,9 @@ php extensions: pdo_*, mbstring, openssl, fileinfo, ctype, json, tokenizer, xml
     admin@example.com  /  ChangeMe123!      <-- change immediately
 
 [Notes]
+- NEW: Admin > Website pages: turn each page ON/OFF (OFF = hidden from menu + "page not available").
+- NEW: Admin > Logo & site info: change 3 logos + favicon (uploads go to public/uploads/site).
+- NEW: Page editor is split into named blocks with a "You are editing: Page > Block" header.
 - NEW: Admin > Pages content edits every text and image on Home, Donations, About and Contact
   (defaults in resources/content/pages.php; overrides saved in the settings table).
 - No new migration needed if you already ran the first ones.
